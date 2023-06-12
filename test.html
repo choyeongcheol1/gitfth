@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no'>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<title><%=identify%> CORE ERP - 한국교육방송공사</title>
+
+</head>
+
+<body style="position: absolute; width: 100%; margin: 0px; padding: 0px; height: 100%; overflow: hidden;">
+	<input type="hidden" name="_envMode" value="<%=_envMode%>" />
+	<input type="hidden" name="_isSessionTimeout" value="<%=_isSessionTimeout%>" />
+	
+	<!-- ERP내부 사용자용  -->
+	<iframe src="/websquare/websquare.html?w2xPath=/ws/cmm/lib/<%=loginPage%>.xml" name="__ifrComLoginFrm" style="width: 100%; height: 100%; display: block;" frameborder="0" scrolling="no" marginheight="0">
+	</iframe>
+	 
+	<!-- 홍보외부자용 -->
+	<!-- 
+	<iframe src="/websquare/websquare.html?w2xPath=/ws/bis/prm/b/<%=loginPage%>.xml" name="__ifrComLoginFrm" style="width: 100%; height: 100%; display: block;" frameborder="0" scrolling="no" marginheight="0">
+	</iframe>
+	 -->
+</body>
+<!-- 로그인이후 처리할 form -->
+<form name="_g_loginform" action="/cmm/lib/frame/mainframe.do" target="_self" method="post"> <input type="hidden" name="uid" value="" />
+</form>
+</html>

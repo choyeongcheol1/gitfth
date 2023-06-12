@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>KIT 웹앱 프로그래밍</h2>
+
+    
+<script>
+
+const startButton = document.getElementById('startButton');
+const stopButton = document.getElementById('stopButton');
+
+let stream = null;
+let recorder = null;
+
+startButton.onclick = async () => {
+  try {
+    stream = await navigator.mediaDevices.getDisplayMedia({
+      video: true,
+      audio: true
+    });
+
+    recorder = RecordRTC(stream, {
+      type: 'video',
+      mimeType: 'video/webm; codecs=vp9'
+    });
+    recorder.startRecording();
+
+    console.log('화면 녹화 시작');
+  } catch (err) {
+    console.error('화면 녹화를 시작할 수 없습니다.', err);
+  }
+};
+
+stopButton.onclick = async () => {
+  if (recorder && recorder.state !== 'inactive') {
+    recorder.stopRecording(() => {
+      console.log('화면 녹화 종료');
+
+      const blob = recorder.getBlob();
+      const url = URL.createObjectURL(blob);
+
+      // 비디오 태그 생성
+      const video = document.createElement('video');
+      video.setAttribute('controls', '');
+      video.src = url;
+
+      // 도큐먼트에 비디오 추가
+      document.body.appendChild(video);
+    });
+  }
+};
+
+</script>
+</body>
+</html>

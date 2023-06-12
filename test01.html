@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <canvas id="myCanvas" width="500" height="500"></canvas>
+    <script>
+      var canvas = document.getElementById("myCanvas");
+      var ctx = canvas.getContext("2d");
+      var xMax = 20;
+      var yMax = 20;
+
+      // 좌표축 그리기
+      ctx.beginPath();
+      ctx.moveTo(20, 20);
+      ctx.lineTo(20, 180);
+      ctx.lineTo(280, 180);
+      ctx.stroke();
+
+      // 가로축 눈금 그리기
+      for (var i = 0.5; i < 280; i += 10) {
+        ctx.beginPath();
+        ctx.moveTo(i, 180);
+        ctx.lineTo(i, 185);
+        ctx.stroke();
+      }
+
+      // 세로축 눈금 그리기
+      for (var i = 0.5; i < 180; i += 10) {
+        ctx.beginPath();
+        ctx.moveTo(20, i);
+        ctx.lineTo(15, i);
+        ctx.stroke();
+      }
+
+      // 그래프 그리기
+      ctx.beginPath();
+      ctx.moveTo(20, 180 - 10); // 시작점 이동
+      for (var i = 1; i <= xMax; i++) {
+        var x = i;
+        var y = Math.sin(x);
+        ctx.lineTo(200 + (x / xMax) * 260, 180 - (y / yMax) * 160);
+      }
+      ctx.stroke();
+    </script>
+  </body>
+</html>

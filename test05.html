@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RecordRTC 녹화 예제</title>
+  </head>
+  <body>
+    <button id="startButton">녹화 시작</button>
+    <button id="stopButton" disabled>녹화 종료</button>
+    <script srchttps://cdn.webrtc-experiment.com/RecordRTC.js"></script>
+    <script>
+      const startButton = document.getElementById('startButton');
+      const stopButton = document.getElementById('stopButton');
+
+      let stream = null;
+      let recorder = null;
+
+      startButton.onclick = async () => {
+        try {
+          stream = await navigator.mediaDevices.getDisplayMedia({
+            video: true,
+            audio: true
+          });
+
+          recorder = RecordRTC(stream, {
+            type: 'video',
+            mimeType: 'video/webm; codecs=vp9'
+          });
+          recorder.startRecording();
+
+          console.log('화면 녹화 시작');
+          startButton.disabled = true;
+          stopButton.disabled = false;
+        } catch (err) {
+          console.error('화면 녹화를 시작할 수 없습니다.', err);
+        }
+      };
+
+      stopButton.onclick = async () => {
+        if (recorder && recorder.state !== 'inactive') {
+          recorder.stopRecording(() => {
+            console.log('화면 녹화 종료');
+
+            const blob = recorder.getBlob();
+
+            // Blob을 File 객체로 변환
+            const fileName = 'recording.webm';
+            const file = new File([blob], fileName, {
+              type: 'video/webm'
+            });
+
+            // 다운로드 링크 생성
+            const url = URL.createObjectURL(file);
+            const link = document.createElement('a');
+            link.setAttribute('href', url);
+            link.setAttribute('download', fileName);
+            link.innerText = '다운로드';
+
+            // 도큐먼트에 링크 추가
+            document.body.appendChild(link);
+          });
+        }
+
+        startButton.disabled = false;
+        stopButton.disabled = true;
+      };
+    </script>
+  </body>
+</html>
